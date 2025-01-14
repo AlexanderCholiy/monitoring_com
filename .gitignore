@@ -1,0 +1,17 @@
+myenv/
+venv/
+.venv/
+
+**/__pycache__/
+*.py[cod]
+
+.env
+
+*.xlsx
+*.json
+*.log
+
+*.tmp
+*.temp
+*.bak
+~$*
