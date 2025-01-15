@@ -36,6 +36,8 @@ def check_com(conn_to_controllers: bool):
         # com.restart_crontab()
         pass
 
+    com.update_msys_com()
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
