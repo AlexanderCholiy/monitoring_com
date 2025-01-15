@@ -1,3 +1,4 @@
+import os
 import argparse
 
 from app.common.input_selection import input_selection
@@ -23,23 +24,24 @@ GEDEL_CONTROLLERS: list[tuple[str]] = [
 def check_com(conn_to_controllers: bool):
     com = COM()
     if conn_to_controllers:
-        # for controller_version, firmware in GEDEL_CONTROLLERS:
-        #     com.send_com_firmware_to_controllers(
-        #         com.unwork_com_ip(controller_version, [0, 1, 2, 3]),
-        #         os.path.join(COM_FIRMWARE_PATH, firmware)
-        #     )
-        # for controller_version, firmware in ALLICS_CONTRILLERS:
-        #     com.send_com_firmware_to_controllers(
-        #         com.unwork_com_ip(controller_version, [21]),
-        #         os.path.join(COM_FIRMWARE_PATH, firmware)
-        #     )
-        # com.restart_crontab()
-        pass
+        for controller_version, firmware in GEDEL_CONTROLLERS:
+            com.send_com_firmware_to_controllers(
+                com.unwork_com_ip(controller_version, [0, 1, 2, 3]),
+                os.path.join(COM_FIRMWARE_PATH, firmware)
+            )
+        for controller_version, firmware in ALLICS_CONTRILLERS:
+            com.send_com_firmware_to_controllers(
+                com.unwork_com_ip(controller_version, [21]),
+                os.path.join(COM_FIRMWARE_PATH, firmware)
+            )
+        com.restart_crontab()
 
-    # com.update_msys_com()
+    com.update_msys_com()
 
     if conn_to_controllers:
         com.find_new_com()
+
+    com.update_com_status()
 
 
 if __name__ == '__main__':

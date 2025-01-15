@@ -24,6 +24,7 @@ from app.controllers.find_com import controllers_connect_com_main
 from app.other.write_conn_controllers_log import write_conn_controllers_log
 from app.other.write_gedel_com import write_gedel_com
 from app.other.write_allics_com import write_allics_com
+from app.other.update_com_status import update_com_srp_status
 
 
 init(autoreset=True)
@@ -195,10 +196,13 @@ class COM:
         """
         asyncio.run(
             controllers_connect_com_main(
-                self.controllers_to_connect[:3], connect_timeout, command_timeout
+                self.controllers_to_connect, connect_timeout, command_timeout
             )
         )
 
         write_conn_controllers_log(RESULTS_COM_PATH)
         write_gedel_com(RESULTS_COM_PATH)
         write_allics_com(RESULTS_COM_PATH)
+
+    def update_com_status(self):
+        update_com_srp_status()
