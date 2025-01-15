@@ -1,3 +1,4 @@
+import os
 import asyncio
 from typing import Union
 from datetime import datetime
@@ -20,9 +21,16 @@ from database.requests.select_controllers_to_connect import (
 from app.controllers.send_firmware import update_com
 from app.controllers.restart_crontab import restart_crontab_main
 from app.controllers.find_com import controllers_connect_com_main
+from app.other.write_conn_controllers_log import write_conn_controllers_log
+from app.other.write_gedel_com import write_gedel_com
+from app.other.write_allics_com import write_allics_com
 
 
 init(autoreset=True)
+CURRENT_DIR: str = os.path.dirname(__file__)
+RESULTS_COM_PATH: str = os.path.join(
+    CURRENT_DIR, '..', '..', 'data', 'find_com.json'
+)
 
 
 class COM:
@@ -115,7 +123,8 @@ class COM:
             )
             if not srp_datetime:
                 update_process(
-                    'Обновление SRP в таблице MSys_COM: ', percent_complete
+                    'Обновляем список SRP в таблице MSys_COM: ',
+                    percent_complete
                 )
                 continue
 
@@ -125,7 +134,7 @@ class COM:
             )
             sql_queries(update_srp_value(modem_mac, record_srp_datetime))
             update_process(
-                'Обновление SRP в таблице MSys_COM: ', percent_complete
+                'Обновляем список SRP в таблице MSys_COM: ', percent_complete
             )
         else:
             print()
@@ -138,7 +147,8 @@ class COM:
             )
             if not com_datetime:
                 update_process(
-                    'Обновление COM в таблице MSys_COM: ', percent_complete
+                    'Обновляем список COM в таблице MSys_COM: ',
+                    percent_complete
                 )
                 continue
 
@@ -149,7 +159,8 @@ class COM:
             com_position = sql_queries(select_com_value(modem_mac))
             if not com_position:
                 update_process(
-                    'Обновление COM в таблице MSys_COM: ', percent_complete
+                    'Обновляем список COM в таблице MSys_COM: ',
+                    percent_complete
                 )
                 continue
             com_position_value = com_position[0][0]
@@ -159,7 +170,7 @@ class COM:
                 sql_queries(add_com_value(modem_mac, record_com_datetime))
 
             update_process(
-                'Обновление COM в таблице MSys_COM: ', percent_complete
+                'Обновляем список COM в таблице MSys_COM: ', percent_complete
             )
 
         else:
@@ -184,6 +195,10 @@ class COM:
         """
         asyncio.run(
             controllers_connect_com_main(
-                self.controllers_to_connect, connect_timeout, command_timeout
+                self.controllers_to_connect[:3], connect_timeout, command_timeout
             )
         )
+
+        write_conn_controllers_log(RESULTS_COM_PATH)
+        write_gedel_com(RESULTS_COM_PATH)
+        write_allics_com(RESULTS_COM_PATH)
