@@ -36,7 +36,10 @@ def check_com(conn_to_controllers: bool):
         # com.restart_crontab()
         pass
 
-    com.update_msys_com()
+    # com.update_msys_com()
+
+    if conn_to_controllers:
+        com.find_new_com()
 
 
 if __name__ == '__main__':

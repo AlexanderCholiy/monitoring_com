@@ -19,6 +19,7 @@ from database.requests.select_controllers_to_connect import (
 )
 from app.controllers.send_firmware import update_com
 from app.controllers.restart_crontab import restart_crontab_main
+from app.controllers.find_com import controllers_connect_com_main
 
 
 init(autoreset=True)
@@ -168,3 +169,21 @@ class COM:
     def controllers_to_connect(self) -> list[str]:
         controllers_ip = sql_queries(select_controllers_to_connect())
         return [row[0] for row in controllers_ip] if controllers_ip else list()
+
+    def find_new_com(
+        self, connect_timeout: int = 30, command_timeout: int = 30
+    ):
+        """
+        Подключение к контроллерам РЩУ для поиска SRP и COM.
+
+        Parameters:
+        ----------
+        - connect_timeout: время в течение которого мы должны успеть
+        подключиться к контроллеру.
+        - command_timeout: время за которое команда должна быть выполнена.
+        """
+        asyncio.run(
+            controllers_connect_com_main(
+                self.controllers_to_connect, connect_timeout, command_timeout
+            )
+        )
