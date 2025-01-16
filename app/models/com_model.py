@@ -59,7 +59,7 @@ class COM:
 
     def send_com_firmware_to_controllers(
         self,
-        controllers_ip: list[str], firmware_folder_path: str, timeout: int = 60
+        controllers_ip: list[str], firmware_folder_path: str, timeout: int = 90
     ) -> None:
         """
         Отправка прошивки для корректной работы COM на контроллеры.
@@ -82,7 +82,7 @@ class COM:
         return sql_queries(select_com_to_check())
 
     def restart_crontab(
-        self, connect_timeout: int = 30, command_timeout: int = 30
+        self, connect_timeout: int = 90, command_timeout: int = 90
     ):
         """
         Подключение к контроллерам РЩУ в асинхронном режиме для ручной передачи
@@ -183,7 +183,7 @@ class COM:
         return [row[0] for row in controllers_ip] if controllers_ip else list()
 
     def find_new_com(
-        self, connect_timeout: int = 30, command_timeout: int = 30
+        self, connect_timeout: int = 90, command_timeout: int = 90
     ):
         """
         Подключение к контроллерам РЩУ для поиска SRP и COM.

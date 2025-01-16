@@ -114,11 +114,11 @@ def write_allics_com(file_path: str):
 
     for index, row in df.iterrows():
         device_ip = row['IP']
-        percent_complete = round((index / len(df)) * 100, 2)
+        percent_complete = round(((index + 1) / len(df)) * 100, 2)
         print(
             (
                 Fore.BLUE + Style.NORMAL +
-                'Обновляем список COM/SRP Gedel в таблице MSys_COM:' +
+                'Обновляем список COM/SRP Allics в таблице MSys_COM: ' +
                 Fore.WHITE + Style.BRIGHT + str(percent_complete) + '%'
             ), end='\r'
         )
